@@ -8,18 +8,44 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
-                  <entry key="nav_book_appointment_client">
+                  <entry key="nav_book_app_client1">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="988" />
-                            <option name="y" value="1080" />
+                            <option name="x" value="12" />
+                            <option name="y" value="724" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_nav_book_appointment_client_to_nav_menu_client">
+                            <entry key="action_nav_book_app_client1_to_nav_book_app_client2">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_nav_book_app_client1_to_nav_menu_client">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="nav_book_app_client2">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="256" />
+                            <option name="y" value="724" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_nav_book_app_client2_to_nav_menu_client">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -71,6 +97,48 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="nav_forget_password_client">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="256" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_nav_forget_password_client_to_nav_login_client">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="nav_forget_password_dentist">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="256" />
+                            <option name="y" value="368" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_nav_forget_password_dentist_to_nav_login_dentist">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="nav_healthzone">
                     <value>
                       <LayoutPositions>
@@ -103,12 +171,74 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_nav_home_to_nav_login_client">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_nav_home_to_nav_login_dentist">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_nav_home_to_nav_register_client">
                               <value>
                                 <LayoutPositions />
                               </value>
                             </entry>
                             <entry key="action_nav_home_to_nav_register_dentist">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="nav_login_client">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-166" />
+                            <option name="y" value="-334" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_nav_login_client_to_nav_forget_password_client">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_nav_login_client_to_nav_menu_client">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="nav_login_dentist">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="368" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_nav_login_dentist_to_nav_forget_password_dentist">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_nav_login_dentist_to_nav_menu_dentist">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -150,7 +280,7 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_nav_menu_client_to_nav_book_appointment_client">
+                            <entry key="action_nav_menu_client_to_nav_book_app_client1">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -161,6 +291,16 @@
                               </value>
                             </entry>
                             <entry key="action_nav_menu_client_to_nav_healthzone">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_nav_menu_client_to_nav_login_client">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_nav_menu_client_to_nav_login_client1">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -197,6 +337,11 @@
                         <option name="myPositions">
                           <map>
                             <entry key="action_nav_menu_dentist_to_nav_book_appointment_dentist">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_nav_menu_dentist_to_nav_login_dentist">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -263,9 +408,18 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="12" />
-                            <option name="y" value="12" />
+                            <option name="x" value="-266" />
+                            <option name="y" value="10" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_nav_register_client_to_nav_login_client">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -275,9 +429,18 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="256" />
-                            <option name="y" value="12" />
+                            <option name="x" value="332" />
+                            <option name="y" value="-422" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_nav_register_dentist_to_nav_login_dentist">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>

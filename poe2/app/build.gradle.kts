@@ -140,4 +140,6 @@ dependencies {
 
     implementation ("com.applandeo:material-calendar-view:1.9.2°")
 
+    implementation ("com.auth0:java-jwt:4.2.1")
+
 }
