@@ -82,14 +82,50 @@ class RegisterClientFragment : Fragment() {
     private fun isValidInput(
         name: String, surname: String, email: String, username: String, password: String, phoneNumber: String
     ): Boolean {
-        return name.isNotEmpty() &&
-                surname.isNotEmpty() &&
-                email.isNotEmpty() &&
-                android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() &&
-                username.isNotEmpty() &&
-                password.length >= 6 &&
-                phoneNumber.isNotEmpty()
+        if (name.isEmpty()) {
+            showToastMessage("Please enter your first name.")
+            return false
+        }
+
+        if (surname.isEmpty()) {
+            showToastMessage("Please enter your surname.")
+            return false
+        }
+
+        if (email.isEmpty()) {
+            showToastMessage("Please enter your email.")
+            return false
+        }
+
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            showToastMessage("Please enter a valid email address.")
+            return false
+        }
+
+        if (username.isEmpty()) {
+            showToastMessage("Please enter your username.")
+            return false
+        }
+
+        if (password.length < 6) {
+            showToastMessage("Password must be at least 6 characters long.")
+            return false
+        }
+
+        if (phoneNumber.isEmpty()) {
+            showToastMessage("Please enter your phone number.")
+            return false
+        }
+
+        // If all validations pass
+        return true
     }
+
+    // Helper function to show a Toast message
+    private fun showToastMessage(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
 
 
     private fun registerUser(
@@ -152,12 +188,12 @@ class RegisterClientFragment : Fragment() {
         if (passwordVisible) {
             binding.etxtPassword.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
             binding.iconViewPassword.setImageResource(R.drawable.visible_icon)
+        } else {
+            binding.etxtPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            binding.iconViewPassword.setImageResource(R.drawable.visible_icon)
         }
-//        else {
-//            binding.etxtPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-//            binding.iconViewPassword.setImageResource(R.drawable.hidden_icon)
-//        }
 
+        // Ensure the cursor stays at the end after toggling
         binding.etxtPassword.setSelection(binding.etxtPassword.text.length)
     }
     private fun showToast(message: String) {

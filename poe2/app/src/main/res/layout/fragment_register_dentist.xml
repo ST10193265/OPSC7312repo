@@ -132,6 +132,7 @@
             android:layout_width="203dp"
             android:layout_height="47dp"
             android:ems="10"
+            android:inputType="text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.86"
@@ -139,11 +140,12 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.336" />
 
-        <AutoCompleteTextView
+        <EditText
             android:id="@+id/etxtAddress"
             android:layout_width="203dp"
             android:layout_height="47dp"
             android:ems="10"
+            android:inputType="textEmailAddress"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.86"
@@ -156,6 +158,7 @@
             android:layout_width="203dp"
             android:layout_height="47dp"
             android:ems="10"
+            android:inputType="text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.86"
@@ -168,6 +171,7 @@
             android:layout_width="203dp"
             android:layout_height="47dp"
             android:ems="10"
+            android:inputType="textPassword"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.86"
@@ -180,6 +184,7 @@
             android:layout_width="203dp"
             android:layout_height="47dp"
             android:ems="10"
+            android:inputType="textEmailAddress"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.86"
@@ -192,6 +197,7 @@
             android:layout_width="203dp"
             android:layout_height="47dp"
             android:ems="10"
+            android:inputType="number"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.86"
