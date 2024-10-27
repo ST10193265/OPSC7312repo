@@ -217,17 +217,28 @@ class LoginClientFragment : Fragment() {
         return Base64.encodeToString(digest.digest(password.toByteArray()), Base64.DEFAULT)
     }
 
+    private fun saveToken(token: String) {
+        val sharedPref = requireActivity().getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
+        sharedPref.edit().putString("jwt_token", token).apply()
+        Log.d("TokenDebug", "Token saved: $token") // Log the token when saved
+    }
+
+
     private fun generateJwtToken(id: String, role: String): String {
         Log.d("LoginClientFragment", "Generating JWT Token for ID: $id with role: $role")
-        val algorithm = Algorithm.HMAC256("supersecretkey") // Use a strong secret in production
+        val algorithm = Algorithm.HMAC256("supersecretkey")
 
-        return JWT.create()
+        val token = JWT.create()
             .withIssuer("auth0")
-            .withClaim("id", id)  // Store user ID in the token
-            .withClaim("role", role) // Add the user's role (either 'clients' or 'dentists')
-            .withExpiresAt(Date(System.currentTimeMillis() + 3600000)) // Token expires in 1 hour
+            .withClaim("id", id)
+            .withClaim("role", role)
+            .withExpiresAt(Date(System.currentTimeMillis() + 3600000))
             .sign(algorithm)
+
+        saveToken(token) // Save token after generation
+        return token
     }
+
 
 
 

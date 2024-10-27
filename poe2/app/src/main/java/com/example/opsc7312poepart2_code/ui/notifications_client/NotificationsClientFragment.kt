@@ -13,7 +13,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.opsc7312poepart2_code.ui.ApiClient
-import com.example.opsc7312poepart2_code.ui.ApiResponse
 import com.example.opsc7312poepart2_code.ui.ApiService
 import com.example.opsc7312poepart2_code.ui.Notification
 import com.example.opsc7312poepart2_code.ui.login_client.LoginClientFragment.Companion.loggedInClientUserId
@@ -26,20 +25,28 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.functions.FirebaseFunctions
 import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.awaitResponse
 
 class NotificationsClientFragment : Fragment() {
 
     private var _binding: FragmentNotificationsClientBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var apiService: ApiService
     private lateinit var btnViewNotifications: Button
-    private lateinit var notificationsListView: ListView
     private lateinit var notificationsAdapter: ArrayAdapter<String>
     private val notificationsList = mutableListOf<String>()
+
+    // Flag to check if notifications have been loaded
+    private var notificationsLoaded = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,27 +55,31 @@ class NotificationsClientFragment : Fragment() {
         _binding = FragmentNotificationsClientBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        // Initialize the ListView
-        notificationsAdapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, notificationsList)
-        binding.notificationsListView.adapter =
-            notificationsAdapter // Access ListView through binding
+        // Initialize ApiService with context
+        apiService = ApiClient.createApiService(requireContext())
 
-        // Initialize views
-        btnViewNotifications = view.findViewById(R.id.btnViewNotifications)
-        notificationsListView = view.findViewById(R.id.notificationsListView)
+        // Initialize the ListView adapter
+        notificationsAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_list_item_1,
+            notificationsList
+        )
+        binding.notificationsListView.adapter = notificationsAdapter
 
-        // Set up the button click listener
+        // Initialize button and set up the click listener
+        btnViewNotifications = binding.btnViewNotifications
         btnViewNotifications.setOnClickListener {
             Log.d("NotificationsClient", "View notifications button clicked")
-            loadNotifications()
+            // Load notifications only if they haven't been loaded yet
+            if (!notificationsLoaded) {
+                loadNotifications()
+            } else {
+                Toast.makeText(context, "Notifications already loaded", Toast.LENGTH_SHORT).show()
+            }
         }
 
-        // Initialize the ImageButtons
-        val ibtnHome: ImageButton = binding.ibtnHome // Access ImageButton through binding
-
-        // Set OnClickListener for the Home button
-        ibtnHome.setOnClickListener {
+        // Home button navigation
+        binding.ibtnHome.setOnClickListener {
             Log.d("NotificationsClient", "Home button clicked")
             findNavController().navigate(R.id.action_nav_notifications_client_to_nav_menu_client)
         }
@@ -77,55 +88,62 @@ class NotificationsClientFragment : Fragment() {
     }
 
     private fun loadNotifications() {
-        val functions = FirebaseFunctions.getInstance()
         Log.d("NotificationsClient", "Starting to load notifications")
 
-        // Call the Firebase Cloud Function to get notifications
-        functions.getHttpsCallable("getPatientNotifications")
-            .call()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d("NotificationsClient", "Successfully called Firebase Cloud Function")
+        // Log the token before making the API call
+        val token = ApiClient.getTokenFromSharedPreferences(requireContext())
+        Log.d("NotificationsClient", "Using token for notifications: $token")
 
-                    val result = task.result?.data as Map<*, *>?
-                    Log.d("NotificationsClient", "Function result: $result")
+        // Use Coroutine for asynchronous execution
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = apiService.getPatientNotifications().awaitResponse()
+                withContext(Dispatchers.Main) {
+                    Log.d("NotificationsClient", "API Response Code: ${response.code()}") // Log response code
+                    if (response.isSuccessful && response.body() != null) {
+                        val apiResponse = response.body()!!
+                        notificationsList.clear()
 
-                    val notificationsData = result?.get("notifications") as? List<Map<String, String>> ?: emptyList()
+                        // Add each notification's message to the list
+                        apiResponse.notifications.forEach { notification ->
+                            notificationsList.add(notification.message)
+                            Log.d("NotificationsClient", "Added notification: ${notification.message}")
+                        }
 
-                    // Clear the list and add the notifications to the list
-                    notificationsList.clear()
-                    notificationsData.forEach { notification ->
-                        val message = notification["message"] ?: "No message"
-                        notificationsList.add(message)
-                        Log.d("NotificationsClient", "Added notification: $message")
+                        // Notify the adapter of data changes
+                        notificationsAdapter.notifyDataSetChanged()
+
+                        // Check if there are no notifications
+                        if (notificationsList.isEmpty()) {
+                            Toast.makeText(context, "No notifications available", Toast.LENGTH_SHORT).show()
+                        } else {
+                            // Set the flag to true indicating notifications are loaded
+                            notificationsLoaded = true
+                        }
+                    } else {
+                        // Handle error response
+                        val error = response.errorBody()?.string() ?: "Unknown error"
+                        Log.e("NotificationsClient", "Failed to load notifications: $error")
+                        Toast.makeText(context, "Failed to load notifications: $error", Toast.LENGTH_SHORT).show()
                     }
-
-                    // Notify the adapter of the data change
-                    notificationsAdapter.notifyDataSetChanged()
-
-                    // Check if the notifications list is empty
-                    if (notificationsList.isEmpty()) {
-                        Log.d("NotificationsClient", "No notifications available")
-                        Toast.makeText(context, "No notifications available", Toast.LENGTH_SHORT).show()
-                    }
-                } else {
-                    // Log the error if the task fails
-                    val error = task.exception?.message ?: "Unknown error"
-                    Log.e("NotificationsClient", "Failed to load notifications: $error")
-                    Toast.makeText(context, "Failed to load notifications: $error", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                // Handle request failure
+                Log.e("NotificationsClient", "Failed to load notifications: ${e.message}")
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "Failed to load notifications: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
-            .addOnFailureListener { exception ->
-                // Additional failure listener to capture exceptions
-                Log.e("NotificationsClient", "Error calling function: ${exception.message}")
-            }
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null // Clear the binding reference to avoid memory leaks
-        Log.d("NotificationsClient", "View destroyed and binding cleared")
     }
 }
+
+
+
 
 

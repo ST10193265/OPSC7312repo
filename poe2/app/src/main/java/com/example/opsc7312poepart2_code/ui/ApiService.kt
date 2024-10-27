@@ -5,6 +5,7 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
@@ -32,7 +33,9 @@ interface ApiService {
 
     // Route for patient notifications
     @GET("api/appointments/notifications/patient")
-    fun getPatientNotifications(): Call<ApiResponse>
+    fun getPatientNotifications(
+
+    ): Call<NotificationsResponse>
 
     // Route for staff notifications
     @GET("notifications/staff")
@@ -97,9 +100,8 @@ data class Notification(
     val status: String
 )
 
-
-data class ApiResponse(
-    val success: Boolean,
-    val data: List<Notification>
+data class NotificationsResponse(
+    val notifications: List<Notification>
 )
+
 
