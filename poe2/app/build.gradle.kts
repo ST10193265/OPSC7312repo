@@ -61,6 +61,7 @@ android {
         implementation(platform(libs.firebase.bom)) // Use the latest Firebase BoM
         implementation(libs.firebase.auth.ktx)
         implementation(libs.firebase.database.ktx)
+        implementation ("com.google.firebase:firebase-messaging-ktx")
 
         // Google Play Services
         implementation("com.google.android.gms:play-services-maps:18.1.0")
@@ -135,6 +136,7 @@ dependencies {
     implementation(libs.androidx.fragment.testing)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.functions.ktx)
     androidTestImplementation(libs.junit.junit)
     androidTestImplementation(libs.junit.junit)
 

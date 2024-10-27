@@ -157,8 +157,8 @@ class LoginClientFragment : Fragment() {
                         Log.d("LoginClientFragment", "Password matches for user:s $username")
                         loggedInClientUsername = username
                         getUserIdFromFirebase(username)
-                        val token = generateJwtToken(username) // Generate JWT token
-                        Log.d("LoginClientFragment", "Generated JWT Token for user $username: $token")
+                       // val token = generateJwtToken(username) // Generate JWT token
+                      //  Log.d("LoginClientFragment", "Generated JWT Token for user $username: $token")
                         Toast.makeText(requireContext(), "Login successful! ", Toast.LENGTH_SHORT).show()
                         clearFields()
                         findNavController().navigate(R.id.action_nav_login_client_to_nav_menu_client)
@@ -194,6 +194,8 @@ class LoginClientFragment : Fragment() {
                     val userSnapshot = snapshot.children.first()
                     loggedInClientUserId = userSnapshot.key
                     Log.d("LoginClientFragment", "loggedInClientUserId: $loggedInClientUserId")
+                    val token = loggedInClientUserId?.let { generateJwtToken(it, "clients") }
+                    Log.d("LoginClientFragment", "Generated JWT Token for user $username: $token")
                 } else {
                     Log.d("LoginClientFragment", "User ID not found for username: $username")
                     Toast.makeText(requireContext(), "User ID not found.", Toast.LENGTH_SHORT).show()
@@ -215,16 +217,19 @@ class LoginClientFragment : Fragment() {
         return Base64.encodeToString(digest.digest(password.toByteArray()), Base64.DEFAULT)
     }
 
-    // Generate a JWT token for the logged-in user
-    private fun generateJwtToken(username: String): String {
-        Log.d("LoginClientFragment", "Generating JWT Token for username: $username")
-        val algorithm = Algorithm.HMAC256("secret") // Use a strong secret in production
+    private fun generateJwtToken(id: String, role: String): String {
+        Log.d("LoginClientFragment", "Generating JWT Token for ID: $id with role: $role")
+        val algorithm = Algorithm.HMAC256("supersecretkey") // Use a strong secret in production
+
         return JWT.create()
             .withIssuer("auth0")
-            .withClaim("username", username)
+            .withClaim("id", id)  // Store user ID in the token
+            .withClaim("role", role) // Add the user's role (either 'clients' or 'dentists')
             .withExpiresAt(Date(System.currentTimeMillis() + 3600000)) // Token expires in 1 hour
             .sign(algorithm)
     }
+
+
 
     // Toggle password visibility
     fun togglePasswordVisibility(view: View) {
