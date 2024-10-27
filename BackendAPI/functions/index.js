@@ -1,15 +1,22 @@
 const express = require('express');
 const cors = require('cors');
 const functions = require('firebase-functions');
+const admin = require('firebase-admin');
 require('dotenv').config(); // Load environment variables from .env file
+
+// Initialize Firebase Admin SDK
+const serviceAccount = process.env.FIREBASE_API_KEY;
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://opsc7312database-default-rtdb.firebaseio.com"
+});
 
 // Initialize Express app
 const app = express();
 
 // Middleware
-app.use(cors({
-  origin: '*', // Allow all origins
-}));
+app.use(cors({ origin: true }));
 
 app.use(express.json());
 
@@ -31,3 +38,4 @@ app.use((err, req, res, next) => {
 
 // Firebase function export
 exports.api = functions.https.onRequest(app);
+
